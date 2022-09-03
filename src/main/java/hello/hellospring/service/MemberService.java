@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service // 이걸 붙여줘야 MemberService가 스프링 컨테이너에 MemberService가 등록이 된다. 그렇지 않으면 MemberService는 그냥 순수 자바 클래스일 뿐이다.
+//@Service // 이걸 붙여줘야 MemberService가 스프링 컨테이너에 MemberService가 등록이 된다. 그렇지 않으면 MemberService는 그냥 순수 자바 클래스일 뿐이다.
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    @Autowired
+
+    // 생성자 주입
     public MemberService(MemberRepository memberRepository) {
         // MemberService 입장에서는 매개변수 memberRepository를 외부에서 넣어준다. 이것을 dependency injection이라 한다.
         this.memberRepository = memberRepository;
