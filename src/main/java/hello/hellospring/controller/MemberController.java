@@ -1,8 +1,14 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller // 스프링 컨테이너라는 스프링 통에 컨트롤러 애너테이션이 있으면 MemberController라는 객체를 생성해 스프링에 넣어두고 관리한다, 이를 스프링 빈이 관리된다고 표현한다.
 public class MemberController {
@@ -27,4 +33,28 @@ public class MemberController {
 //    public void setMemberService(MemberService memberService) {
 //        this.memberService = memberService;
 //    }
+
+    @GetMapping(value = "/members/new")
+    public String createForm(){
+        return "members/createMemberForm";
+    } // createMemberForm으로 이동한다.리턴하면 templates에서 찾음
+
+    @PostMapping("/members/new")
+    public String create(MemberForm form){
+        Member member = new Member();
+        member.setName(form.getName());
+
+        System.out.println("member.getName() = " + member.getName());
+
+        memberService.join(member);
+
+        return "redirect:/"; // 회원가입이 끝난 후 홈 화면으로 보냄.
+    }
+
+    @GetMapping("/members")
+    public String list(Model model){
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members); // 멤버의 리스트를 모델에 담아 뷰 템플릿에 넘긴다.
+        return "members/memberList";
+    }
 }
